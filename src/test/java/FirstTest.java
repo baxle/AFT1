@@ -18,7 +18,6 @@ public class FirstTest {
     private WebDriverWait wait1;
 
 
-
     @Before
     public void setUp() throws Exception {
 
@@ -35,34 +34,46 @@ public class FirstTest {
     @Test
     public void testInsurance() throws Exception {
         driver.get(baseUrl);
-        driver.findElement(By.xpath("//li[@class='dropdown adv-analytics-navigation-line1-link current']/a[contains(.,'Страхование')]")).click();
-        driver.findElement(By.xpath("//div[@class='grid rgs-main-menu-links']//a[contains(.,'ДМС')]")).click();
+        //  driver.findElement(By.xpath("//li[contains(@class,'navigation-line1')]/a")).click()
+        driver.findElement(By.xpath("//*[contains(text(),'Страхование')]")).click();
+        driver.findElement(By.xpath("//*[contains(text(),'ДМС')]")).click();
+
 
         wait = new WebDriverWait(driver, 10, 1500);
         wait.until(ExpectedConditions.visibilityOf(
-                driver.findElement(By.xpath("//a[contains(.,'Отправить заявку')]"))));
+                driver.findElement(By.xpath("//*[contains(@class,'btn')][contains(text(),'Отправить заявку')]"))));
 
 
         assertEquals("Добровольное медицинское страхование",
                 driver.findElement(By.xpath("//strong[.='Добровольное медицинское страхование']")).getText());
 
-        driver.findElement(By.xpath("//a[contains(.,'Отправить заявку')]")).click();
+        driver.findElement(By.xpath("//*[contains(@class,'btn')][contains(text(),'Отправить заявку')]")).click();
 
         wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//h4[@class='modal-title']"))));
 
-        assertEquals("Заявка на добровольное медицинское страхование", driver.findElement(By.xpath("//b[.='Заявка на добровольное медицинское страхование']")).getText());
-        wait1 = new WebDriverWait(driver,50);
+        assertEquals("Заявка на добровольное медицинское страхование", driver.findElement(By.xpath("//*[contains(text(),'Заявка на добровольное медицинское страхование')]")).getText());
+        wait1 = new WebDriverWait(driver, 10);
         fillField(By.name("FirstName"), "Владимир");
         fillField(By.name("LastName"), "Путин");
         fillField(By.name("MiddleName"), "Владимирович");
 
         new Select(driver.findElement(By.name("Region"))).selectByVisibleText("Москва");
 
-        fillField(By.xpath("//form[@id='applicationForm']//div[5]/input[@class='form-control']"), "8005553535");
-        fillField(By.name("Email"), "qwertyqwerty");
-        fillField(By.name("ContactDate"), "12112019" + "\n");
-        fillField(By.name("Comment"), "Без комментариев.");
 
+
+        fillField(By.name("Email"), "qwertyqwerty");
+
+
+        do{
+            fillField(By.name("ContactDate"), "12122019"+"\n");
+            System.out.println(driver.findElement(By.name("ContactDate")).getAttribute("value"));
+        }
+       while ((driver.findElement(By.name("ContactDate")).getAttribute("value")) != "12.12.2019");
+
+
+
+        fillField(By.xpath("//div[5]//input[1]"), "8005553535");
+        fillField(By.name("Comment"), "Без комментариев.");
 
         driver.findElement(By.xpath("//input[@class='checkbox']")).click();
         driver.findElement(By.xpath("//button[@id='button-m']")).click();
@@ -71,7 +82,7 @@ public class FirstTest {
         assertEquals("Владимир", driver.findElement(By.name("FirstName")).getAttribute("value"));
         assertEquals("Путин", driver.findElement(By.name("LastName")).getAttribute("value"));
         assertEquals("Владимирович", driver.findElement(By.name("MiddleName")).getAttribute("value"));
-
+        assertEquals("+7 (800) 555-35-35", driver.findElement(By.xpath("//div[5]//input[1]")).getAttribute("value"));
         assertEquals("qwertyqwerty", driver.findElement(By.name("Email")).getAttribute("value"));
         assertEquals("Без комментариев.", driver.findElement(By.name("Comment")).getAttribute("value"));
 
@@ -81,13 +92,15 @@ public class FirstTest {
 
         assertEquals("Введите адрес электронной почты",
                 driver.findElement(By.xpath("//span[@class='validation-error-text']")).getText());
+        Assert.assertEquals("12.12.2019", driver.findElement(By.name("ContactDate")).getAttribute("value"));
     }
 
-     @After
+
+   /* @After
      public void tearDown() throws Exception {
         driver.quit();
-      }
-
+     }
+*/
 
     private void fillField(By locator, String value) {
         driver.findElement(locator).clear();

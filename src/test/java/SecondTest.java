@@ -1,3 +1,4 @@
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -30,7 +31,7 @@ public class SecondTest {
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, 10, 1500);
-        wait1 = new WebDriverWait(driver,50);
+        wait1 = new WebDriverWait(driver, 50);
     }
 
 
@@ -39,21 +40,25 @@ public class SecondTest {
 
 
         driver.get(baseUrl);
-        driver.findElement(By.xpath("//div[@class='paste-region__region header__region header__region_77']//span[.='Москва']")).click();
+       // driver.findElement(By.xpath("//div[@class='paste-region__region header__region header__region_77']//span[.='Москва']")).click();
 
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//h4[@class='kit-grid-modal__header']"))));
-       fillField(By.xpath("//div[@class='kit-input kit-input_focused']/input[@class='kit-input__control']"), "Нижегородская область");
+        driver.findElement(By.xpath("//*[contains(@class, 'region__title')]")).click();
 
-       driver.findElement(By.xpath("//a[.='Нижегородская область']")).click();
+        fillField(By.xpath("//*[contains(@class, 'kit-input')][contains(@type, 'search')]"), "Нижегородская область");
 
-        assertEquals("Нижегородская область", driver.findElement(By.xpath("//div[@class='paste-region__region header__region header__region_52']//span[.='Нижегородская область']")).getText());
+        driver.findElement(By.xpath("//a[.='Нижегородская область']")).click();
+
+        assertEquals("Нижегородская область", driver.findElement(By.xpath("//*[contains(@class, 'region__title')]")).getText());
 
         ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
 
         driver.findElement(By.xpath("//UL[@class='footer__social']/self::UL")).isEnabled();
     }
 
-
+    @After
+    public void tearDown() throws Exception {
+        driver.quit();
+    }
 
 
     private void fillField(By locator, String value) {
