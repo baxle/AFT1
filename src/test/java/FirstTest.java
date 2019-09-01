@@ -68,8 +68,9 @@ public class FirstTest {
             fillField(By.name("ContactDate"), "12122019"+"\n");
             System.out.println(driver.findElement(By.name("ContactDate")).getAttribute("value"));
         }
-       while ((driver.findElement(By.name("ContactDate")).getAttribute("value")) != "12.12.2019");
+       while ((driver.findElement(By.name("ContactDate")).getAttribute("value")) != "12122019");
 
+      // fillField(By.name("ContactDate"), "12122019"+"\n");
 
 
         fillField(By.xpath("//div[5]//input[1]"), "8005553535");
@@ -96,11 +97,11 @@ public class FirstTest {
     }
 
 
-   /* @After
+    @After
      public void tearDown() throws Exception {
         driver.quit();
      }
-*/
+
 
     private void fillField(By locator, String value) {
         driver.findElement(locator).clear();
