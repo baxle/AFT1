@@ -1,4 +1,8 @@
-import org.junit.*;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -34,7 +38,7 @@ public class FirstTest {
     @Test
     public void testInsurance() throws Exception {
         driver.get(baseUrl);
-        //  driver.findElement(By.xpath("//li[contains(@class,'navigation-line1')]/a")).click()
+
         driver.findElement(By.xpath("//*[contains(text(),'Страхование')]")).click();
         driver.findElement(By.xpath("//*[contains(text(),'ДМС')]")).click();
 
@@ -58,22 +62,18 @@ public class FirstTest {
         fillField(By.name("MiddleName"), "Владимирович");
 
         new Select(driver.findElement(By.name("Region"))).selectByVisibleText("Москва");
-
-
-
         fillField(By.name("Email"), "qwertyqwerty");
 
 
         do{
             fillField(By.name("ContactDate"), "12122019"+"\n");
-            System.out.println(driver.findElement(By.name("ContactDate")).getAttribute("value"));
         }
        while (!(driver.findElement(By.name("ContactDate")).getAttribute("value")).equals("12.12.2019"));
 
-      // fillField(By.name("ContactDate"), "12122019"+"\n");
 
 
-        fillField(By.xpath("//div[5]//input[1]"), "8005553535");
+
+        fillField(By.xpath("//*[contains(@class,'form-control')][contains(@data-bind, 'Phone')]"), "8005553535");
         fillField(By.name("Comment"), "Без комментариев.");
 
         driver.findElement(By.xpath("//input[@class='checkbox']")).click();
@@ -83,7 +83,7 @@ public class FirstTest {
         assertEquals("Владимир", driver.findElement(By.name("FirstName")).getAttribute("value"));
         assertEquals("Путин", driver.findElement(By.name("LastName")).getAttribute("value"));
         assertEquals("Владимирович", driver.findElement(By.name("MiddleName")).getAttribute("value"));
-        assertEquals("+7 (800) 555-35-35", driver.findElement(By.xpath("//div[5]//input[1]")).getAttribute("value"));
+        assertEquals("+7 (800) 555-35-35", driver.findElement(By.xpath("//*[contains(@class,'form-control')][contains(@data-bind, 'Phone')]")).getAttribute("value"));
         assertEquals("qwertyqwerty", driver.findElement(By.name("Email")).getAttribute("value"));
         assertEquals("Без комментариев.", driver.findElement(By.name("Comment")).getAttribute("value"));
 
