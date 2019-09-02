@@ -68,7 +68,7 @@ public class FirstTest {
             fillField(By.name("ContactDate"), "12122019"+"\n");
             System.out.println(driver.findElement(By.name("ContactDate")).getAttribute("value"));
         }
-       while ((driver.findElement(By.name("ContactDate")).getAttribute("value")) != "12122019");
+       while (!(driver.findElement(By.name("ContactDate")).getAttribute("value")).equals("12.12.2019"));
 
       // fillField(By.name("ContactDate"), "12122019"+"\n");
 
